@@ -1,0 +1,6 @@
+@MarkingService_HostAddress = http://localhost:5189
+
+GET {{MarkingService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
