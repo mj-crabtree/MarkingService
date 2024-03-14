@@ -1,6 +1,7 @@
 using AutoMapper;
-using MarkingService.Entities;
+using MarkingService.Models.Dto;
 using MarkingService.Services;
+using MarkingService.Services.Builders;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarkingService.Controllers;
@@ -19,25 +20,28 @@ public class MarkingController : ControllerBase
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
-    
+
     [HttpPost]
-    public async Task<ActionResult<MarkedFileDto>> MarkFile(UnmarkedFileDto unmarkedFileDto)
+    public async Task<ActionResult<MarkedFileDto>> MarkFile(UnmarkedFileDto unmarkedFileDto,
+        UnmarkedFileBuilder unmarkedFileBuilder)
     {
-        var unmarkedFile = _mapper.Map<UnmarkedFile>(unmarkedFileDto);
+        if (unmarkedFileDto == null)
+        {
+            return BadRequest();
+        }
+        if (unmarkedFileBuilder == null)
+        {
+            throw new ArgumentNullException(nameof(unmarkedFileBuilder));
+        }
+        
+        // todo: ensure mapping is functional
+        var unmarkedFile = unmarkedFileBuilder
+            .WithDtoData(unmarkedFileDto)
+            .Build();
+        
+        // todo: ensure successful file marking
         var markedFile = _fileMarkingService.MarkFile(unmarkedFile);
+        // todo: refactor to created at route
         return Ok(markedFile);
     }
-}
-
-public class UnmarkedFileDto
-{
-    // note: nothing comes in if it hasn't first been vetted by the upload service
-    public string FileLocation { get; set; }
-    public string FileType { get; set; } // ex. application/pdf
-    public ClassificationTier ClassificationTier { get; set; }
-}
-
-public class MarkedFileDto
-{
-    public bool Success { get; set; }
 }

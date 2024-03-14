@@ -1,7 +1,7 @@
 using AutoMapper;
 using MarkingService.Controllers;
 using MarkingService.Entities;
-using MarkingService.Services;
+using MarkingService.Models.Dto;
 
 namespace MarkingService.Profiles;
 

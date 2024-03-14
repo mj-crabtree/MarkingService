@@ -4,11 +4,6 @@ using System.Text.Json;
 
 namespace MarkingService.Services;
 
-public interface IAuditServiceClient
-{
-    Task CreateAuditEvent();
-}
-
 class AuditServiceClient : IAuditServiceClient
 {
     private readonly IHttpClientFactory _httpClientFactory;
