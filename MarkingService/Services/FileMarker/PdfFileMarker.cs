@@ -11,10 +11,10 @@ namespace MarkingService.Services.FileMarker;
 
 public class PdfFileMarker : IFileMarker
 {
-    private readonly IFileSystemService _fileSystemService;
     private const string FontName = StandardFonts.HELVETICA;
     private const int FontSize = 11;
     private const string OutputFilePath = "";
+    private readonly IFileSystemService _fileSystemService;
 
     public PdfFileMarker(IFileSystemService fileSystemService)
     {
@@ -29,7 +29,7 @@ public class PdfFileMarker : IFileMarker
             unmarkedFile.Path,
             OutputFilePath,
             unmarkedFile.ClassificationTier);
-        
+
         ApplyVisualMarking(wrappedPdf);
         // ApplyMetadataMarking(wrappedPdf);
         throw new NotImplementedException();
@@ -45,8 +45,9 @@ public class PdfFileMarker : IFileMarker
     {
         throw new NotImplementedException();
     }
-    
-    private void MarkSection(WrappedPdf wrappedPdf, Func<Rectangle, float> positionCalculator, VerticalAlignment alignment)
+
+    private void MarkSection(WrappedPdf wrappedPdf, Func<Rectangle, float> positionCalculator,
+        VerticalAlignment alignment)
     {
         var pdf = wrappedPdf.Pdf;
         var doc = wrappedPdf.Document;
@@ -63,16 +64,19 @@ public class PdfFileMarker : IFileMarker
             doc.ShowTextAligned(header, x, y, i, TextAlignment.LEFT, alignment, 0);
         }
     }
-    
-    private void MarkHeaderSection(WrappedPdf pdf) => MarkSection(pdf, page => page.GetTop() - 20, VerticalAlignment.BOTTOM);
 
-    private void MarkFooterSection(WrappedPdf pdf) => MarkSection(pdf, page => page.GetBottom() + 20, VerticalAlignment.TOP);
+    private void MarkHeaderSection(WrappedPdf pdf)
+    {
+        MarkSection(pdf, page => page.GetTop() - 20, VerticalAlignment.BOTTOM);
+    }
+
+    private void MarkFooterSection(WrappedPdf pdf)
+    {
+        MarkSection(pdf, page => page.GetBottom() + 20, VerticalAlignment.TOP);
+    }
 
     private class WrappedPdf
     {
-        public ClassificationTier ClassificationTier { get; }
-        public PdfDocument Pdf { get; }
-        public Document Document { get; set; }
         public WrappedPdf(string readerPath, string writerPath, ClassificationTier classificationTier)
         {
             ClassificationTier = classificationTier;
@@ -81,5 +85,9 @@ public class PdfFileMarker : IFileMarker
                 new PdfWriter(writerPath));
             Document = new Document(Pdf);
         }
+
+        public ClassificationTier ClassificationTier { get; }
+        public PdfDocument Pdf { get; }
+        public Document Document { get; set; }
     }
 }

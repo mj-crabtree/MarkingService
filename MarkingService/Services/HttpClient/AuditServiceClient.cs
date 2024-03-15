@@ -4,10 +4,10 @@ using System.Text.Json;
 
 namespace MarkingService.Services;
 
-class AuditServiceClient : IAuditServiceClient
+internal class AuditServiceClient : IAuditServiceClient
 {
-    private readonly IHttpClientFactory _httpClientFactory;
     private const string AuditUrl = "http://localhost:5100/api/events";
+    private readonly IHttpClientFactory _httpClientFactory;
 
     public AuditServiceClient(IHttpClientFactory httpClientFactory)
     {

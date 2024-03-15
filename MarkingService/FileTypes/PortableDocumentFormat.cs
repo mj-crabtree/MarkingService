@@ -2,9 +2,9 @@ namespace MarkingService.FileTypes;
 
 public abstract class FileFormat
 {
-    private string TypeName;
     private string Extension;
     private byte[] LeadingBytes;
+    private string TypeName;
 }
 
 public class PortableDocumentFormat : FileFormat

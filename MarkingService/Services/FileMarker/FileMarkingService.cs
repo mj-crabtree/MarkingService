@@ -12,15 +12,15 @@ public class FileMarkingService : IFileMarkingService
         _fileMarkerFactory = fileMarkerFactory ?? throw new ArgumentNullException(nameof(fileMarkerFactory));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
-    
+
     public MarkedFile MarkFile(UnmarkedFile unmarkedFile)
     {
         // todo: ensure appropriate file marker is returned
         var fileMarker = _fileMarkerFactory.GetFileMarker(unmarkedFile.FileType);
-        
+
         // todo: ensure file marking returns marked file
         var markedFile = fileMarker.Mark(unmarkedFile);
-        
+
         return markedFile;
     }
 }

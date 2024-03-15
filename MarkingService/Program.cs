@@ -1,7 +1,9 @@
+using MarkingService.Contexts;
 using MarkingService.Options;
 using MarkingService.Services;
 using MarkingService.Services.Builders;
 using MarkingService.Services.FileMarker;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -20,6 +22,10 @@ builder.Services.AddControllers();
 
 builder.Host.UseSerilog();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddDbContext<FilesDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DbConnection")));
+
+
 builder.Services.AddScoped<IFileSystemService, FileSystemService>();
 builder.Services.AddScoped<IFileMarkerFactory, FileMarkerFactory>();
 builder.Services.AddScoped<IFileMarkingService, FileMarkingService>();

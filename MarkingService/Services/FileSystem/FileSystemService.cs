@@ -1,5 +1,3 @@
-using MarkingService.Entities;
-
 namespace MarkingService.Services;
 
 public class FileSystemService : IFileSystemService

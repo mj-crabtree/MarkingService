@@ -10,9 +10,10 @@ public class FileMarkerFactory : IFileMarkerFactory
     {
         _fileMarkers = fileMarkers ?? throw new ArgumentNullException(nameof(fileMarkers));
     }
-    
+
     public IFileMarker GetFileMarker(string fileFormat)
     {
-        return _fileMarkers.FirstOrDefault(f => f.HandlerFormat == fileFormat) ?? throw new NotSupportedException(nameof(fileFormat));
+        return _fileMarkers.FirstOrDefault(f => f.HandlerFormat == fileFormat) ??
+               throw new NotSupportedException(nameof(fileFormat));
     }
 }
