@@ -6,4 +6,8 @@ namespace MarkingService.Contexts;
 public class FilesDbContext : DbContext
 {
     public DbSet<MarkedFile> Files { get; set; }
+
+    public FilesDbContext(DbContextOptions options) : base(options)
+    {
+    }
 }

@@ -24,8 +24,6 @@ builder.Host.UseSerilog();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<FilesDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DbConnection")));
-
-
 builder.Services.AddScoped<IFileSystemService, FileSystemService>();
 builder.Services.AddScoped<IFileMarkerFactory, FileMarkerFactory>();
 builder.Services.AddScoped<IFileMarkingService, FileMarkingService>();
