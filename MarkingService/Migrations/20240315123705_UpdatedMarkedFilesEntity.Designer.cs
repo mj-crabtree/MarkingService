@@ -3,6 +3,7 @@ using System;
 using MarkingService.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarkingService.Migrations
 {
     [DbContext(typeof(FilesDbContext))]
-    partial class FilesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240315123705_UpdatedMarkedFilesEntity")]
+    partial class UpdatedMarkedFilesEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
