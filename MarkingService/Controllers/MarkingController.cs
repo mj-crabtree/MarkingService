@@ -26,24 +26,6 @@ public class MarkingController : ControllerBase
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    [HttpGet]
-    [Route("/{fileId}")]
-    public async Task<ActionResult<MarkedFileDto>> GetFile(Guid fileId)
-    {
-        if (fileId == Guid.Empty)
-        {
-            throw new ArgumentNullException(nameof(fileId));
-        }
-
-        var fileEntity = await _context.Files.FirstOrDefaultAsync(f => f.Id == fileId);
-        if (fileEntity == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(_mapper.Map<MarkedFileDto>(fileEntity));
-    }
-
     [HttpPost]
     public async Task<ActionResult<MarkedFileDto>> MarkFile(UnmarkedFileDto unmarkedFileDto,
         UnmarkedFileBuilder unmarkedFileBuilder)

@@ -6,6 +6,9 @@ using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using MarkingService.Entities;
+using MarkingService.Options;
+using Microsoft.Extensions.Options;
+using Path = System.IO.Path;
 
 namespace MarkingService.Services.FileMarker;
 
@@ -13,26 +16,29 @@ public class PdfFileMarker : IFileMarker
 {
     private const string FontName = StandardFonts.HELVETICA;
     private const int FontSize = 11;
-    private const string OutputFilePath = "";
+    private readonly string _outputFilePath;
     private readonly IFileSystemService _fileSystemService;
 
-    public PdfFileMarker(IFileSystemService fileSystemService)
+    public PdfFileMarker(IFileSystemService fileSystemService, IOptions<FilePathOptions> options)
     {
         _fileSystemService = fileSystemService ?? throw new ArgumentNullException(nameof(fileSystemService));
+        _outputFilePath = options.Value.Processed;
     }
 
-    public string HandlerFormat => "application/pdf";
+    public string HandlerFormat => ".pdf";
 
     public MarkedFile Mark(UnmarkedFile unmarkedFile)
     {
+        var fileName = Path.GetFileName(unmarkedFile.Path);
         var wrappedPdf = new WrappedPdf(
             unmarkedFile.Path,
-            OutputFilePath,
+            Path.Combine(_outputFilePath, fileName),
             unmarkedFile.ClassificationTier);
 
         ApplyVisualMarking(wrappedPdf);
         // ApplyMetadataMarking(wrappedPdf);
-        throw new NotImplementedException();
+        wrappedPdf.Document.Close();
+        return new MarkedFile();
     }
 
     private void ApplyVisualMarking(WrappedPdf wrappedPdf)
@@ -77,12 +83,12 @@ public class PdfFileMarker : IFileMarker
 
     private class WrappedPdf
     {
-        public WrappedPdf(string readerPath, string writerPath, ClassificationTier classificationTier)
+        public WrappedPdf(string source, string dest, ClassificationTier classificationTier)
         {
             ClassificationTier = classificationTier;
             Pdf = new PdfDocument(
-                new PdfReader(readerPath),
-                new PdfWriter(writerPath));
+                new PdfReader(source),
+                new PdfWriter(dest));
             Document = new Document(Pdf);
         }
 
