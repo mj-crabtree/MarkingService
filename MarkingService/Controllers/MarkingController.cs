@@ -40,19 +40,15 @@ public class MarkingController : ControllerBase
             throw new ArgumentNullException(nameof(unmarkedFileBuilder));
         }
 
-        // todo: ensure mapping is functional
         var unmarkedFile = unmarkedFileBuilder
             .WithDtoData(unmarkedFileDto)
             .Build();
 
-        // todo: ensure successful file marking
         var markedFile = _fileMarkingService.MarkFile(unmarkedFile);
 
-        // todo: ensure successful EF persistence
         _context.Files.Add(markedFile);
         await _context.SaveChangesAsync();
 
-        // todo: refactor to created at route
         return Ok(markedFile);
     }
 }
